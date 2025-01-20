@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1736984184688,
+      "tag": "0000_lumpy_weapon_omega",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1737267731353,
+      "tag": "0001_soft_energizer",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1737271377396,
+      "tag": "0002_flat_sir_ram",
+      "breakpoints": true
+    }
+  ]
+}

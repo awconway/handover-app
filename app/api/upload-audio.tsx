@@ -9,7 +9,7 @@ export async function loader({ params }: Route.LoaderArgs) {
   const file = await fileStorage.get(storageKey);
 
   if (!file) {
-    throw new Response("User avatar not found", {
+    throw new Response("Audio not found", {
       status: 404,
     });
   }

@@ -4,3 +4,19 @@
 # React Router
 /.react-router/
 /build/
+.env
+
+# audio binary files
+/uploads
+
+__pycache__/
+
+# deid
+/deid
+/transcripts
+
+# scratch files
+scratch.*
+
+
+drizzle.db

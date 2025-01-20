@@ -18,7 +18,8 @@
 			"extensions": [
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
-				"ms-python.python"
+				"ms-python.python",
+				"RSIP-Vision.nvidia-smi-plus"
 			]
 		}
 	},

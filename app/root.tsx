@@ -10,6 +10,11 @@ import {
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 
+import { GlobalLoading } from "~/components/GlobalLoading";
+import { SidebarLayout } from "./components/sidebar-layout";
+import { Sidebar, SidebarHeader, SidebarItem, SidebarLabel } from "./components/sidebar";
+import { ArrowPathIcon } from "@heroicons/react/16/solid";
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -42,8 +47,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+function SidebarComponent() {
+  return (
+    <Sidebar>
+      <SidebarHeader>
+        <SidebarItem href={`/audio/${Math.random().toString(36).substring(7)}`} >
+        <ArrowPathIcon />
+        <SidebarLabel>Start a new session</SidebarLabel>
+        </SidebarItem>
+      </SidebarHeader>
+    </Sidebar>
+  )
+}
+
 export default function App() {
-  return <Outlet />;
+  return (
+      <SidebarLayout sidebar={<SidebarComponent />} navbar={undefined}>
+      <GlobalLoading />
+      <Outlet />
+      </SidebarLayout>
+  )
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
