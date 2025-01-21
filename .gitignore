@@ -10,10 +10,13 @@
 /uploads
 
 __pycache__/
+*.pyc
 
 # deid
-/deid
-/transcripts
+/deid/run/
+/deid/transcripts/
+/deid/predictions.jsonl
+/deid/test.jsonl
 
 # scratch files
 scratch.*

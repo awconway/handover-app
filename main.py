@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+
 from pydantic import BaseModel
 from typing import List
 import json
@@ -71,7 +72,8 @@ async def get_transcription(data: Transcript):
         raise HTTPException(
             status_code=404, detail=f"Directory does not exist: {file_path}")
 
-    device = "cuda"
+    device = "cpu"
+    # device = "cuda"  # use "cuda" for GPU
     audio_file = binary_file_path
     batch_size = 16  # reduce if low on GPU mem
     # change to "int8" if low on GPU mem (may reduce accuracy)
@@ -79,7 +81,10 @@ async def get_transcription(data: Transcript):
 
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(
-        "distil-large-v3", device, compute_type=compute_type)
+        "distil-large-v3", device, 
+        # compute_type="float16" # use float16 for low GPU mem or CPU
+        compute_type="int8"
+        )
 
     audio = whisperx.load_audio(audio_file)
     result = model.transcribe(audio, batch_size=batch_size)
