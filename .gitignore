@@ -20,3 +20,5 @@ scratch.*
 
 
 drizzle.db
+
+.zed/
