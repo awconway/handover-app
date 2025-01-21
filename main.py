@@ -72,18 +72,17 @@ async def get_transcription(data: Transcript):
         raise HTTPException(
             status_code=404, detail=f"Directory does not exist: {file_path}")
 
-    device = "cpu"
-    # device = "cuda"  # use "cuda" for GPU
+    # device = "cpu"
+    device = "cuda"  # use "cuda" for GPU
     audio_file = binary_file_path
     batch_size = 16  # reduce if low on GPU mem
-    # change to "int8" if low on GPU mem (may reduce accuracy)
+    # change to "int8" if low on GPU mem or mac (may reduce accuracy)
     compute_type = "float16"
-
+    # compute_type="int8"
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(
         "distil-large-v3", device, 
-        # compute_type="float16" # use float16 for low GPU mem or CPU
-        compute_type="int8"
+        compute_type=compute_type
         )
 
     audio = whisperx.load_audio(audio_file)
