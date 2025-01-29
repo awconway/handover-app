@@ -1,25 +1,93 @@
 import { ArrowPathIcon, ArrowUpTrayIcon } from '@heroicons/react/16/solid'
-import { Code, Text } from "~/components/text";
+import { Text } from "~/components/text";
 import { Description, Field, Fieldset, Label, Legend } from '~/components/fieldset'
 import { Radio, RadioField, RadioGroup } from '~/components/radio'
 import { addLLMresponse, getTranscriptions } from '~/db.server';
 import type { Route } from './+types/transcription';
 import { Outlet, redirect, useFetcher } from 'react-router';
-import ISBARHighlighter from "~/components/IsbarHighlighter";
-
-// rich text editor
-import { Suspense, lazy, useState } from "react";
-import { extensions } from "~/textEditorSetup/extensions";
-import { useEditor } from "@tiptap/react";
-import { editorProps } from "~/textEditorSetup/editorProps";
-
-
 // catalyst ui
 import { Button } from "~/components/button";
-import { AlertActions, AlertDescription } from "~/components/alert";
-import { Heading, Subheading } from '~/components/heading';
-import { PaginationPrevious } from '~/components/pagination';
-const EditorModule = lazy(() => import('~/textEditorSetup/Editor'));
+import { AlertActions } from "~/components/alert";
+import { Subheading } from '~/components/heading';
+// rich text editor
+import { useState } from "react";
+import StarterKit from "@tiptap/starter-kit";
+import { EditorProvider, useCurrentEditor } from "@tiptap/react";
+import clsx from 'clsx';
+import { ArrowUturnLeftIcon, ArrowUturnRightIcon } from "@heroicons/react/16/solid";
+
+export const extensions = [
+    StarterKit.configure({
+      bulletList: {
+        keepMarks: true,
+        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      },
+      orderedList: {
+        keepMarks: true,
+        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+      },
+    }),
+  ];
+  
+  
+
+const editorProps = {
+  attributes: {
+    // these are styles for the actual textbox of the editor. taken from the HeadlessTextarea part of the textarea component
+    class: clsx([
+      'relative block h-full w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
+
+      // Typography
+      'prose',
+      'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
+
+      // Border
+      'border border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20',
+
+      // Background color
+      'bg-transparent dark:bg-white/5',
+
+      // Hide default focus styles
+      'focus:outline-none',
+
+      // Invalid state
+      'data-[invalid]:border-red-500 data-[invalid]:data-[hover]:border-red-500 data-[invalid]:dark:border-red-600 data-[invalid]:data-[hover]:dark:border-red-600',
+
+      // Disabled state
+      'disabled:border-zinc-950/20 disabled:dark:border-white/15 disabled:dark:bg-white/[2.5%] dark:data-[hover]:disabled:border-white/15',
+
+      'resize-y overflow-auto min-h-[200px]',
+
+
+    ]),
+  },
+};
+
+const MenuBar = () => {
+  const { editor } = useCurrentEditor();
+
+  if (!editor) {
+    return null;
+  }
+  return (
+    <div className="my-2 flex flex-wrap gap-2">
+      <Button
+        outline
+        onClick={() => editor.chain().focus().undo().run()}
+        disabled={!editor.can().undo()}
+      >
+        <ArrowUturnLeftIcon />
+      </Button>
+      <Button
+        outline
+        onClick={() => editor.chain().focus().redo().run()}
+        disabled={!editor.can().redo()}
+      >
+        <ArrowUturnRightIcon />
+      </Button>
+    </div>
+  );
+};
 
 export async function loader({ request, params }: Route.LoaderArgs) {
     if (!params.id) {
@@ -115,16 +183,7 @@ export default function Audio({
     const fetcher = useFetcher();
     const convertedDeid = data[0].deid;
     const [textEditor, setTextEditor] = useState(convertedDeid);
-    const editor = useEditor({
-        editable: true,
-        content: convertedDeid,
-        extensions: extensions,
-        immediatelyRender: false,
-        onUpdate({ editor }) {
-            setTextEditor(editor.getText());
-        },
-        editorProps: editorProps,
-    });
+
 const gptminiInputTokens = (((((tokens.transcript_tokens) + tokens.prompt_tokens) * (0.15 / 1000000)) * 1.61) * 1000)
 const gptminiOutputTokens = (((((tokens.transcript_tokens)) * (0.6 / 1000000)) * 1.61) * 1000) // basically the same as input because asking for it to categorise the text from the input
 const gptminiTotalTokens = (gptminiInputTokens + gptminiOutputTokens).toPrecision(3)
@@ -149,9 +208,16 @@ const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
                     <Description>
                         You can de-identify the transcript of the audio recording below before evaluating the content. Potential personal health information is highlighted in capitals.
                     </Description>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <EditorModule editor={editor} />
-                    </Suspense>
+                    <EditorProvider
+                          onUpdate={({ editor }) => {
+                            setTextEditor(editor.getText());
+                          }}
+                          slotBefore={<MenuBar />}
+                          extensions={extensions}
+                          content={data[0].deid}
+                          editorProps={editorProps}
+                          immediatelyRender={false}
+                        ></EditorProvider>
                     <input type="hidden" name="textEditor" value={textEditor} />
                     <input type="hidden" name="id" value={params.id} />
                 </Field>
