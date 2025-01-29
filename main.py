@@ -282,31 +282,26 @@ class InputModel(BaseModel):
 
 
 
-class QuoteDetails(BaseModel):
-    quote: str
-
-class ISBARSubCategory(BaseModel):
-    segments: List[QuoteDetails]  # Updated to a list of QuoteDetails objects
-
-
 class ISBARModel(BaseModel):
-    Identification: ISBARSubCategory
-    Situation: ISBARSubCategory
-    Background: ISBARSubCategory
-    Assessment: ISBARSubCategory
-    Recommendation: ISBARSubCategory
+    quote: str
+    label: str
 
 
 class ISBAROutput(BaseModel):
-    ISBAR: ISBARModel
+    spans: List[ISBARModel]
 
 prompt = """
-You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text from the handover into a structured format.
-For the given clinical handover text that you are given, please identify and extract text that aligns with ISBAR categories.
-Instructions:
-- Ensure that no text from the transcript is extracted into more than one quote. Each extracted piece of text must belong to a single category.
-- Information from the text can appear out of sequence; identify and assign it correctly regardless of its position.
-- Do not paraphrase, summarize, or modify words, capitalization or punctuation. Information must be extracted exactly from the original text. No rephrasing is allowed.
+# Your task
+
+You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text into a structured format.
+
+## Instructions
+1. Identify and extract text from the clinical handover transcript that aligns with the ISBAR framework categories: **IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION**.
+2. **Each extracted quote must represent a single piece of information**. If the transcript contains multiple pieces of information within the same category, extract each as a separate quote.
+3. **Do not combine unrelated details** into a single quote. Each piece of extracted text should be concise and specific to one detail.
+4. Extracted text must appear **exactly as written in the original transcript**, preserving spelling, capitalization, punctuation, and phrasing. Do not paraphrase. Do not summarize. Do not correct incorrectly spelled words. Do not correct errors. Do not rephrase.
+5. Text can appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position in the transcript.
+6. If text does not fit into any ISBAR category, do not extract it.
 """
 
 @app.post("/llm/")
@@ -325,6 +320,7 @@ async def get_eval(data: InputModel):
     )
     # print number of tokens used
     print(response.usage)
+    print(response.choices[0].message.parsed)
     return {
             "llmresponse": response.choices[0].message.parsed,
             "usage": response.usage

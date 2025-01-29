@@ -31,13 +31,13 @@ export default function Llm({ params, loaderData }: Route.ComponentProps) {
       <Text className="leading-10">
         <ISBARHighlighter
           transcript={data[0].deid}
-          isbarData={data[0].llmresponse.ISBAR}
+          isbarData={data[0].llmresponse.spans}
         />
       </Text>
       <Divider className="mt-48" />
       <details className="mt-8">
         <summary>LLM model response</summary>
-        <pre>{JSON.stringify(data[0].llmresponse.ISBAR, null, 2)}</pre>
+        <pre>{JSON.stringify(data[0].llmresponse.spans, null, 2)}</pre>
       </details>
     </div>
   );
