@@ -228,7 +228,7 @@ const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
                         <RadioField>
                             <Radio value="gpt-4o-mini" />
                             <Label>GPT 4o mini</Label>
-                            <Description>Cheaper option to use most often (approximately ${gptminiTotalTokens} to evaluate 1000 handovers of similar length)</Description>
+                            <Description>Cheaper option (approximately ${gptminiTotalTokens} to evaluate 1000 handovers of similar length)</Description>
                         </RadioField>
                         <RadioField>
                             <Radio value="gpt-4o" />
