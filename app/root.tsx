@@ -31,7 +31,7 @@ export const links: Route.LinksFunction = () => [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html className="bg-white lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -52,8 +52,8 @@ function SidebarComponent() {
     <Sidebar>
       <SidebarHeader>
         <SidebarItem href={`/audio/${Math.random().toString(36).substring(7)}`} >
-        <ArrowPathIcon />
-        <SidebarLabel>Start a new session</SidebarLabel>
+          <ArrowPathIcon />
+          <SidebarLabel>Start a new session</SidebarLabel>
         </SidebarItem>
       </SidebarHeader>
     </Sidebar>
@@ -62,10 +62,10 @@ function SidebarComponent() {
 
 export default function App() {
   return (
-      <SidebarLayout sidebar={<SidebarComponent />} navbar={undefined}>
+    <SidebarLayout sidebar={<SidebarComponent />} navbar={undefined}>
       <GlobalLoading />
       <Outlet />
-      </SidebarLayout>
+    </SidebarLayout>
   )
 }
 
