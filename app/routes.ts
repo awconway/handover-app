@@ -7,5 +7,4 @@ export default [
             route(":llm/llm", "routes/llm.tsx"),
         ]),
     ]),
-    route("user/:id/audio", "api/upload-audio.tsx"),
 ] satisfies RouteConfig;
