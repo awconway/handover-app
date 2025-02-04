@@ -18,75 +18,75 @@ import { ArrowUturnLeftIcon, ArrowUturnRightIcon } from "@heroicons/react/16/sol
 
 export const extensions = [
     StarterKit.configure({
-      bulletList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
-      orderedList: {
-        keepMarks: true,
-        keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
-      },
+        bulletList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+        orderedList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
     }),
-  ];
-  
-  
+];
+
+
 
 const editorProps = {
-  attributes: {
-    // these are styles for the actual textbox of the editor. taken from the HeadlessTextarea part of the textarea component
-    class: clsx([
-      'relative block h-full w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
+    attributes: {
+        // these are styles for the actual textbox of the editor. taken from the HeadlessTextarea part of the textarea component
+        class: clsx([
+            'relative block h-full w-full appearance-none rounded-lg px-[calc(theme(spacing[3.5])-1px)] py-[calc(theme(spacing[2.5])-1px)] sm:px-[calc(theme(spacing.3)-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]',
 
-      // Typography
-      'prose',
-      'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
+            // Typography
+            'prose',
+            'text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white',
 
-      // Border
-      'border border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20',
+            // Border
+            'border border-zinc-950/10 data-[hover]:border-zinc-950/20 dark:border-white/10 dark:data-[hover]:border-white/20',
 
-      // Background color
-      'bg-transparent dark:bg-white/5',
+            // Background color
+            'bg-transparent dark:bg-white/5',
 
-      // Hide default focus styles
-      'focus:outline-none',
+            // Hide default focus styles
+            'focus:outline-none',
 
-      // Invalid state
-      'data-[invalid]:border-red-500 data-[invalid]:data-[hover]:border-red-500 data-[invalid]:dark:border-red-600 data-[invalid]:data-[hover]:dark:border-red-600',
+            // Invalid state
+            'data-[invalid]:border-red-500 data-[invalid]:data-[hover]:border-red-500 data-[invalid]:dark:border-red-600 data-[invalid]:data-[hover]:dark:border-red-600',
 
-      // Disabled state
-      'disabled:border-zinc-950/20 disabled:dark:border-white/15 disabled:dark:bg-white/[2.5%] dark:data-[hover]:disabled:border-white/15',
+            // Disabled state
+            'disabled:border-zinc-950/20 disabled:dark:border-white/15 disabled:dark:bg-white/[2.5%] dark:data-[hover]:disabled:border-white/15',
 
-      'resize-y overflow-auto min-h-[200px]',
+            'resize-y overflow-auto min-h-[200px]',
 
 
-    ]),
-  },
+        ]),
+    },
 };
 
 const MenuBar = () => {
-  const { editor } = useCurrentEditor();
+    const { editor } = useCurrentEditor();
 
-  if (!editor) {
-    return null;
-  }
-  return (
-    <div className="my-2 flex flex-wrap gap-2">
-      <Button
-        outline
-        onClick={() => editor.chain().focus().undo().run()}
-        disabled={!editor.can().undo()}
-      >
-        <ArrowUturnLeftIcon />
-      </Button>
-      <Button
-        outline
-        onClick={() => editor.chain().focus().redo().run()}
-        disabled={!editor.can().redo()}
-      >
-        <ArrowUturnRightIcon />
-      </Button>
-    </div>
-  );
+    if (!editor) {
+        return null;
+    }
+    return (
+        <div className="my-2 flex flex-wrap gap-2">
+            <Button
+                outline
+                onClick={() => editor.chain().focus().undo().run()}
+                disabled={!editor.can().undo()}
+            >
+                <ArrowUturnLeftIcon />
+            </Button>
+            <Button
+                outline
+                onClick={() => editor.chain().focus().redo().run()}
+                disabled={!editor.can().redo()}
+            >
+                <ArrowUturnRightIcon />
+            </Button>
+        </div>
+    );
 };
 
 export async function loader({ request, params }: Route.LoaderArgs) {
@@ -184,19 +184,14 @@ export default function Audio({
     const convertedDeid = data[0].deid;
     const [textEditor, setTextEditor] = useState(convertedDeid);
 
-const gptminiInputTokens = (((((tokens.transcript_tokens) + tokens.prompt_tokens) * (0.15 / 1000000)) * 1.61) * 1000)
-const gptminiOutputTokens = (((((tokens.transcript_tokens)) * (0.6 / 1000000)) * 1.61) * 1000) // basically the same as input because asking for it to categorise the text from the input
-const gptminiTotalTokens = (gptminiInputTokens + gptminiOutputTokens).toPrecision(3)
-const gpt4oInputTokens = (((((tokens.transcript_tokens) + tokens.prompt_tokens) * (2.5 / 1000000)) * 1.61) * 1000)
-const gpt4oOutputTokens = (((((tokens.transcript_tokens)) * (10 / 1000000)) * 1.61) * 1000) // basically the same as input because asking for it to categorise the text from the input
-const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
+    const gptminiInputTokens = (((((tokens.transcript_tokens) + tokens.prompt_tokens) * (0.15 / 1000000)) * 1.61) * 1000)
+    const gptminiOutputTokens = (((((tokens.transcript_tokens)) * (0.6 / 1000000)) * 1.61) * 1000) // basically the same as input because asking for it to categorise the text from the input
+    const gptminiTotalTokens = (gptminiInputTokens + gptminiOutputTokens).toPrecision(3)
+    const gpt4oInputTokens = (((((tokens.transcript_tokens) + tokens.prompt_tokens) * (2.5 / 1000000)) * 1.61) * 1000)
+    const gpt4oOutputTokens = (((((tokens.transcript_tokens)) * (10 / 1000000)) * 1.61) * 1000) // basically the same as input because asking for it to categorise the text from the input
+    const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
     return (
         <div className="space-y-4">
-            <audio
-                controls
-            >
-                <source src={`/user/${params.id}/audio`} ></source>
-            </audio>
             <fetcher.Form
                 method="post"
                 className="flex flex-col gap-4 pt-4"
@@ -209,15 +204,15 @@ const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
                         You can de-identify the transcript of the audio recording below before evaluating the content. Potential personal health information is highlighted in capitals.
                     </Description>
                     <EditorProvider
-                          onUpdate={({ editor }) => {
+                        onUpdate={({ editor }) => {
                             setTextEditor(editor.getText());
-                          }}
-                          slotBefore={<MenuBar />}
-                          extensions={extensions}
-                          content={data[0].deid}
-                          editorProps={editorProps}
-                          immediatelyRender={false}
-                        ></EditorProvider>
+                        }}
+                        slotBefore={<MenuBar />}
+                        extensions={extensions}
+                        content={data[0].deid}
+                        editorProps={editorProps}
+                        immediatelyRender={false}
+                    ></EditorProvider>
                     <input type="hidden" name="textEditor" value={textEditor} />
                     <input type="hidden" name="id" value={params.id} />
                 </Field>
@@ -240,22 +235,15 @@ const gpt4oTotalTokens = (gpt4oInputTokens + gpt4oOutputTokens).toPrecision(3)
                 <Field>
                     <Subheading>The text below is the 'prompt' (i.e. instructions) that will be sent to the large language model to evaluate the handover.</Subheading>
                     <Text>
-                        <p>
-                            You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text from the handover into a structured format. For the given clinical handover text that you are given, please identify and extract text that aligns with ISBAR categories.
-                        </p>
-                        <p>
-                            Instructions:
-                        </p>
+                        <p>You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text into a structured format.</p>
+                        <p>Instructions:</p>
                         <ul className='list-disc mx-8'>
-                            <li>
-                                Ensure that no text from the transcript is extracted into more than one quote. Each extracted piece of text must belong to a single category.
-                            </li>
-                            <li>
-                                Information from the text can appear out of sequence; identify and assign it correctly regardless of its position.
-                            </li>
-                            <li>
-                                Do not paraphrase, summarize, or modify words, capitalization or punctuation. Information must be extracted exactly from the original text. No rephrasing is allowed.
-                            </li>
+                            <li>Identify and extract text from the clinical handover transcript that aligns with the ISBAR framework categories: IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION.</li>
+                            <li>Each extracted quote must represent a single piece of information. If the transcript contains multiple pieces of information within the same category, extract each as a separate quote.</li>
+                            <li>Do not combine unrelated details into a single quote. Each piece of extracted text should be concise and specific to one detail.</li>
+                            <li>Extracted text must appear exactly as written in the original transcript, preserving spelling, capitalization, punctuation, and phrasing. Do not paraphrase. Do not summarize. Do not correct incorrectly spelled words. Do not correct errors. Do not rephrase.</li>
+                            <li>Text can appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position in the transcript.</li>
+                            <li>If text does not fit into any ISBAR category, do not extract it.</li>
                         </ul>
                     </Text>
                 </Field>

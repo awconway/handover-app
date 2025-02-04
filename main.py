@@ -1,15 +1,14 @@
-from fastapi import FastAPI, HTTPException
-
+from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 from typing import List
 import json
 
 # imports for transcription
-import hashlib
 import os
 import whisperx
 import os
-
+import subprocess
+import numpy as np
 # imports for language model
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -37,60 +36,111 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 app = FastAPI()
 
-# Directory where the binary files are stored
-BINARY_FILES_DIR = "uploads/audio"
+class InputModel(BaseModel):
+    transcript: str
+    model: str
 
 
 
-def compute_hash(key: str, algorithm: str = 'sha256') -> str:
-    key_bytes = key.encode('utf-8')
-    hash_object = hashlib.new(algorithm)
-    hash_object.update(key_bytes)
-    return hash_object.hexdigest()
+class ISBARModel(BaseModel):
+    quote: str
+    label: str
 
 
-class Transcript(BaseModel):
-    key: str
+class ISBAROutput(BaseModel):
+    spans: List[ISBARModel]
 
+prompt = """
+# Your task
+
+You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text into a structured format.
+
+## Instructions
+1. Identify and extract text from the clinical handover transcript that aligns with the ISBAR framework categories: **IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION**.
+2. **Each extracted quote must represent a single piece of information**. If the transcript contains multiple pieces of information within the same category, extract each as a separate quote.
+3. **Do not combine unrelated details** into a single quote. Each piece of extracted text should be concise and specific to one detail.
+4. Extracted text must appear **exactly as written in the original transcript**, preserving spelling, capitalization, punctuation, and phrasing. Do not paraphrase. Do not summarize. Do not correct incorrectly spelled words. Do not correct errors. Do not rephrase.
+5. Text can appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position in the transcript.
+6. If text does not fit into any ISBAR category, do not extract it.
+"""
+
+@app.post("/llm/")
+async def get_eval(data: InputModel):
+    OPENAI_MODEL = data.model
+    transcription = data.transcript
+
+    # Use OpenAI API to process the transcript
+    response = client.beta.chat.completions.parse(
+        model=OPENAI_MODEL,
+        messages=[
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": transcription}
+        ],
+        response_format=ISBAROutput
+    )
+    # print number of tokens used
+    print(response.usage)
+    print(response.choices[0].message.parsed)
+    return {
+            "llmresponse": response.choices[0].message.parsed,
+            "usage": response.usage
+            }
+
+class Tokens(BaseModel):
+    transcript: str
+    model: str
+
+def num_tokens_from_string(string: str, encoding_name: str) -> int:
+    """Returns the number of tokens in a text string."""
+    encoding_name_string = tiktoken.encoding_for_model(encoding_name).name  # returns str 
+    encoding = tiktoken.get_encoding(encoding_name_string)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
+
+@app.post("/tokens/")
+async def get_tokens(data: Tokens):
+    transcript_tokens = num_tokens_from_string(data.transcript, data.model)
+    prompt_tokens = num_tokens_from_string(prompt, data.model)
+    input_tokens = transcript_tokens + prompt_tokens
+    return {
+        "input_tokens": input_tokens,
+        "transcript_tokens": transcript_tokens,
+        "prompt_tokens": prompt_tokens
+    }
 
 @app.post("/transcribe/")
-async def get_transcription(data: Transcript):
-    # Compute the hash of the input string
-    file_hash = compute_hash(data.key)
-    # Build the file path with the first 8 characters as a subdirectory
-    subdirectory = file_hash[:8]  # First 8 characters of the hash
-    file_path = os.path.join(BINARY_FILES_DIR, subdirectory)
-
-    if os.path.isdir(file_path):
-        # List all files in the directory
-        files = os.listdir(file_path)
-    # Filter files with .bin extension
-        binary_file = [file for file in files if file.endswith('.bin')][0]
-        binary_file_path = os.path.join(file_path, binary_file)
-    else:
-        print(f"Directory does not exist: {file_path}")
-        raise HTTPException(
-            status_code=404, detail=f"Directory does not exist: {file_path}")
-
-    # device = "cpu"
-    device = "cuda"  # use "cuda" for GPU
-    audio_file = binary_file_path
+async def transcribe_audio(audio: UploadFile = File(...)):
+    filename = audio.filename
+    device = "cpu"
+    # device = "cuda"  # use "cuda" for GPU
     batch_size = 16  # reduce if low on GPU mem
     # change to "int8" if low on GPU mem or mac (may reduce accuracy)
-    compute_type = "float16"
-    # compute_type="int8"
+    # compute_type = "float16"
+    compute_type="int8"
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(
         "distil-large-v3", device, 
         compute_type=compute_type
         )
+    webm_buffer = audio.file.read()
+    cmd = [
+        "ffmpeg",
+        "-nostdin",
+        "-threads", "0",
+        "-i", "pipe:0",  # Read input from stdin (WebM buffer)
+        "-f", "s16le",  # Output format: signed 16-bit little-endian PCM
+        "-ac", "1",  # Convert to mono
+        "-acodec", "pcm_s16le",  # Use PCM 16-bit codec
+        "-ar", str(16000),  # Set sample rate
+        "pipe:1",  # Output raw PCM audio to stdout
+    ]
 
-    audio = whisperx.load_audio(audio_file)
+    # Run the command with input from buffer and capture output
+    process = subprocess.run(cmd, input=webm_buffer, capture_output=True, check=True)
+    out = process.stdout  # This contains the raw PCM audio
+    audio = np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
+
     result = model.transcribe(audio, batch_size=batch_size)
-
-    # delete model if low on GPU resources
-    # import gc; gc.collect(); torch.cuda.empty_cache(); del model
-
     # 2. Align whisper output
     model_a, metadata = whisperx.load_align_model(
         language_code=result["language"], device=device)
@@ -103,57 +153,31 @@ async def get_transcription(data: Transcript):
 
     identifiable_transcript = {
         "text": transcription,
-        "meta": {"note_id": data.key, "patient_id": data.key},
+        "meta": {"note_id": filename, "patient_id": filename},
         "spans": []
     }
-    # check if the file exists
-    transcript_path = f"deid/transcripts/{data.key}.jsonl"
-    if os.path.exists(transcript_path):
-        print(f"File exists: {transcript_path}")
-    else:
-        HTTPException(
-            status_code=404, detail=f"File does not exist: {transcript_path}")
 
-
-    with open(f"deid/transcripts/{data.key}.jsonl", "w") as f:
+    with open(f"deid/transcripts/{filename}.jsonl", "w") as f:
         f.write(json.dumps(identifiable_transcript))
 
-    #
     # deidentify the transcription
 
     # ## STEP 1: INITIALIZE
 
-    input_file = f"deid/transcripts/{data.key}.jsonl"
-    if os.path.exists(input_file):
-        print(f"input_file exists: {input_file}")
-    else:
-        HTTPException(
-            status_code=404, detail=f"File does not exist: {input_file}")
+    input_file = f"deid/transcripts/{filename}.jsonl"
+
     # Initialize the location where we will store the sentencized and tokenized dataset (ner_dataset_file)
     ner_dataset_file = 'deid/test.jsonl'
-    if os.path.exists(ner_dataset_file):
-        print(f"ner_dataset_file exists: {ner_dataset_file}")
-    else:
-        HTTPException(
-            status_code=404, detail=f"File does not exist: {ner_dataset_file}")
+    
     # Initialize the location where we will store the model predictions (predictions_file)
     # Verify this file location - Ensure it's the same location that you will pass in the json file
     # to the sequence tagger model. i.e. output_predictions_file in the json file should have the same
     # value as below
     predictions_file = 'deid/predictions.jsonl'
-    if os.path.exists(predictions_file):
-        print(f"predictions_file exists: {predictions_file}")
-    else:
-        HTTPException(
-            status_code=404, detail=f"File does not exist: {predictions_file}")
+    
     # Initialize the model config. This config file contains the various parameters of the model.
     model_config = 'deid/predict_i2b2.json'
-    if os.path.exists(model_config):
-        print(f"model_config exists: {model_config}")
-    else:
-        HTTPException(
-            status_code=404, detail=f"File does not exist: {model_config}")
-
+    
     # ## STEP 2: NER DATASET
     # * Sentencize and tokenize the raw text. We used sentences of length 128, which includes an additional 32 context tokens on either side of the sentence. These 32 tokens serve (from the previous & next sentence) serve as additional context to the current sentence.
     # * We used the en_core_sci_lg sentencizer and a custom tokenizer (can be found in the preprocessing module)
@@ -272,78 +296,11 @@ async def get_transcription(data: Transcript):
     deid_raw = deidentified_transcription[0]["deid_text"]
     # remove the << and >> from the deid text
     deid = deid_raw.replace("<<", "").replace(">>", "")
+
+    # clean up the files
+    os.remove(input_file)
+    os.remove(ner_dataset_file)
+    os.remove(predictions_file)
+
     return {"transcription": transcription,
             "deid": deid }
-
-
-class InputModel(BaseModel):
-    transcript: str
-    model: str
-
-
-
-class ISBARModel(BaseModel):
-    quote: str
-    label: str
-
-
-class ISBAROutput(BaseModel):
-    spans: List[ISBARModel]
-
-prompt = """
-# Your task
-
-You are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text into a structured format.
-
-## Instructions
-1. Identify and extract text from the clinical handover transcript that aligns with the ISBAR framework categories: **IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION**.
-2. **Each extracted quote must represent a single piece of information**. If the transcript contains multiple pieces of information within the same category, extract each as a separate quote.
-3. **Do not combine unrelated details** into a single quote. Each piece of extracted text should be concise and specific to one detail.
-4. Extracted text must appear **exactly as written in the original transcript**, preserving spelling, capitalization, punctuation, and phrasing. Do not paraphrase. Do not summarize. Do not correct incorrectly spelled words. Do not correct errors. Do not rephrase.
-5. Text can appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position in the transcript.
-6. If text does not fit into any ISBAR category, do not extract it.
-"""
-
-@app.post("/llm/")
-async def get_eval(data: InputModel):
-    OPENAI_MODEL = data.model
-    transcription = data.transcript
-
-    # Use OpenAI API to process the transcript
-    response = client.beta.chat.completions.parse(
-        model=OPENAI_MODEL,
-        messages=[
-            {"role": "system", "content": prompt},
-            {"role": "user", "content": transcription}
-        ],
-        response_format=ISBAROutput
-    )
-    # print number of tokens used
-    print(response.usage)
-    print(response.choices[0].message.parsed)
-    return {
-            "llmresponse": response.choices[0].message.parsed,
-            "usage": response.usage
-            }
-
-class Tokens(BaseModel):
-    transcript: str
-    model: str
-
-def num_tokens_from_string(string: str, encoding_name: str) -> int:
-    """Returns the number of tokens in a text string."""
-    encoding_name_string = tiktoken.encoding_for_model(encoding_name).name  # returns str 
-    encoding = tiktoken.get_encoding(encoding_name_string)
-    num_tokens = len(encoding.encode(string))
-    return num_tokens
-
-@app.post("/tokens/")
-async def get_tokens(data: Tokens):
-    transcript_tokens = num_tokens_from_string(data.transcript, data.model)
-    prompt_tokens = num_tokens_from_string(prompt, data.model)
-    input_tokens = transcript_tokens + prompt_tokens
-    return {
-        "input_tokens": input_tokens,
-        "transcript_tokens": transcript_tokens,
-        "prompt_tokens": prompt_tokens
-    }

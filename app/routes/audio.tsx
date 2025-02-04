@@ -1,16 +1,8 @@
 import type { Route } from "./+types/audio";
-import {
-    FileUpload,
-    parseFormData,
-} from "@mjackson/form-data-parser";
-import {
-    fileStorage,
-    getStorageKey,
-} from "~/audio-storage.server";
 import { useState } from "react";
 import { Outlet, redirect, useFetcher, useLocation } from "react-router";
 import { addTranscription } from "~/db.server";
-import { ArrowPathIcon, ArrowUpTrayIcon, CheckIcon } from '@heroicons/react/16/solid'
+import { ArrowPathIcon, ArrowUpTrayIcon } from '@heroicons/react/16/solid'
 import { Button } from "~/components/button";
 import AudioRecorder from "~/components/AudioRecorder";
 
@@ -20,65 +12,33 @@ export async function action({
     request,
     params,
 }: Route.ActionArgs) {
-
-    async function uploadHandler(fileUpload: FileUpload) {
-        if (
-            fileUpload.fieldName === "audio" &&
-            fileUpload.type.startsWith("audio/")
-        ) {
-
-            console.log("Uploading audio file:", fileUpload.name);
-
-            let storageKey = getStorageKey(params.id);
-
-            // FileUpload objects are not meant to stick around for very long (they are
-            // streaming data from the request.body); store them as soon as possible.
-            await fileStorage.set(storageKey, fileUpload);
-
-            // Return a File for the FormData object. This is a LazyFile that knows how
-            // to access the file's content if needed (using e.g. file.stream()) but
-            // waits until it is requested to actually read anything.
-            return fileStorage.get(storageKey);
-
-        }
-    }
-
-    const formData = await parseFormData(
-        request,
-        uploadHandler
-    );
-    const url = 'http://127.0.0.1:8000/transcribe/';
-    const data = {
-        key: `user-${params.id}-audio`
-    };
-
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const res = await response.json();
+    
+    
+    const audioData = await request.formData();
         try {
-            await addTranscription(res.transcription, res.deid, params.id);
-            return redirect(`/audio/${params.id}/transcription`);
-
+            const response = await fetch("http://localhost:8000/transcribe/", {
+                method: "POST",
+                body: audioData,
+        
+            })
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const res = await response.json();
+            try {
+                        await addTranscription(res.transcription, res.deid, params.id);
+                        return redirect(`/audio/${params.id}/transcription`);
+            
+                    } catch (error) {
+                        return error;
+                    }
         } catch (error) {
-            return error;
+            console.error('Error:', error);
         }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+
 
 }
-export default function Audio() {
+export default function Audio({ params }: Route.ComponentProps) {
     const fetcher = useFetcher();
     const [audioBlob, setAudioBlob] = useState<Blob>();
 
@@ -98,7 +58,7 @@ export default function Audio() {
                                     <Button
                                         onClick={() => {
                                             const formData = new FormData();
-                                            formData.append("audio", audioBlob); // Add the recording of the audio.
+                                            formData.append("audio", audioBlob, `user-${params.id}-audio`); // Add the recording of the audio.
                                             fetcher.submit(formData, { method: "post", encType: "multipart/form-data" });
                                         }}
                                     >
