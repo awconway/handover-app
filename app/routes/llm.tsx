@@ -36,8 +36,17 @@ export default function Llm({ params, loaderData }: Route.ComponentProps) {
       </Text>
       <Divider className="mt-48" />
       <details className="mt-8">
+        <summary>LLM prompt</summary>
+        <pre className="whitespace-pre-wrap overflow-x-auto p-4 bg-gray-100 rounded">
+          {JSON.stringify(data[0].prompt, null, 2)}
+        </pre>
+      </details>
+      <Divider className="mt-48" />
+      <details className="mt-8">
         <summary>LLM model response</summary>
-        <pre>{JSON.stringify(data[0].llmresponse.spans, null, 2)}</pre>
+        <pre className="whitespace-pre-wrap overflow-x-auto p-4 bg-gray-100 rounded">
+          {JSON.stringify(data[0].llmresponse.spans, null, 2)}
+        </pre>
       </details>
     </div>
   );

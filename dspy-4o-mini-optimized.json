@@ -1,0 +1,930 @@
+{
+  "self": {
+    "lm": null,
+    "traces": [],
+    "train": [],
+    "demos": [
+      {
+        "augmented": true,
+        "text": "In Bed 1, we've got George Antonio Sanchez, 43 years old, and the doctor's mate came in with high blood pressure for investigation. He already had all tests done and awaiting results. He is clear for discharge if all is good. And that's all for him. ",
+        "reasoning": "Not supplied for this particular example.",
+        "spans": [
+          {
+            "quote": "In Bed 1, we've got George Antonio Sanchez, 43 years old, and the doctor's mate",
+            "label": "IDENTIFICATION",
+            "start": 0,
+            "end": 79
+          },
+          {
+            "quote": "came in with high blood pressure for investigation",
+            "label": "SITUATION",
+            "start": 80,
+            "end": 130
+          },
+          {
+            "quote": "He already had all tests done and awaiting results",
+            "label": "RECOMMENDATION",
+            "start": 132,
+            "end": 182
+          },
+          {
+            "quote": "He is clear for discharge if all is good",
+            "label": "RECOMMENDATION",
+            "start": 184,
+            "end": 224
+          }
+        ]
+      },
+      {
+        "augmented": true,
+        "text": "On bed 7, it's Unita Muleta, 51 years old, under Dr. Garcia. She came in with heartburn under investigation and obs are all stable, nil other issues. And that's all for her. ",
+        "reasoning": "Not supplied for this particular example.",
+        "spans": [
+          {
+            "quote": "On bed 7, it's Unita Muleta, 51 years old, under Dr. Garcia.",
+            "label": "IDENTIFICATION",
+            "start": 0,
+            "end": 59
+          },
+          {
+            "quote": "She came in with heartburn under investigation",
+            "label": "SITUATION",
+            "start": 61,
+            "end": 107
+          },
+          {
+            "quote": "obs are all stable, nil other issues.",
+            "label": "ASSESSMENT",
+            "start": 112,
+            "end": 148
+          }
+        ]
+      },
+      {
+        "augmented": true,
+        "text": "In bed 4, it's Robert Lewis who wants to be called Bob. He's 62 under Dr. Johnson and he came in with heart attack and had a cabbage. He's got a history of high HD and he's for MRSA and VRE surveillance swab. uh he is with ongoing surgical wound care which looks nice and clean and healing well and he is complaining of constipation and hasn't opened his bowels for the last three days now regular appearance given with good effect and all his obs are all stable and that's all for ",
+        "reasoning": "Not supplied for this particular example.",
+        "spans": [
+          {
+            "quote": "In bed 4, it's Robert Lewis who wants to be called Bob. He's 62 under Dr. Johnson",
+            "label": "IDENTIFICATION",
+            "start": 0,
+            "end": 81
+          },
+          {
+            "quote": "he came in with heart attack and had a cabbage.",
+            "label": "SITUATION",
+            "start": 86,
+            "end": 132
+          },
+          {
+            "quote": "He's got a history of high HD",
+            "label": "BACKGROUND",
+            "start": 134,
+            "end": 163
+          },
+          {
+            "quote": "he's for MRSA and VRE surveillance swab.",
+            "label": "RECOMMENDATION",
+            "start": 168,
+            "end": 207
+          },
+          {
+            "quote": "he is with ongoing surgical wound care which looks nice and clean and healing well",
+            "label": "ASSESSMENT",
+            "start": 212,
+            "end": 294
+          },
+          {
+            "quote": "he is complaining of constipation and hasn't opened his bowels for the last three days now",
+            "label": "ASSESSMENT",
+            "start": 299,
+            "end": 389
+          },
+          {
+            "quote": "regular appearance given with good effect",
+            "label": "RECOMMENDATION",
+            "start": 390,
+            "end": 431
+          },
+          {
+            "quote": "and all his obs are all stable.",
+            "label": "ASSESSMENT",
+            "start": 432,
+            "end": 462
+          }
+        ]
+      },
+      {
+        "augmented": true,
+        "text": "On bed 3 is Ken Harris, 71 years old under Dr. Gregor. He came in with arrhythmia. He complained of chest pain this morning and ECG was done and reviewed by the team. He was given some anginine and morphine for the pain and he's still tachycardic and new meds have been ordered in the med chart still for pulse checks for one full minute um still awaiting for echo this afternoon his blood pressure is just normal though he is scoring muse of three for the tachycardia otherwise he's still for monitoring ",
+        "reasoning": "Not supplied for this particular example.",
+        "spans": [
+          {
+            "quote": "On bed 3 is Ken Harris, 71 years old under Dr. Gregor.",
+            "label": "IDENTIFICATION",
+            "start": 0,
+            "end": 53
+          },
+          {
+            "quote": "He came in with arrhythmia.",
+            "label": "SITUATION",
+            "start": 55,
+            "end": 81
+          },
+          {
+            "quote": "He complained of chest pain this morning and ECG was done and reviewed by the team.",
+            "label": "SITUATION",
+            "start": 83,
+            "end": 165
+          },
+          {
+            "quote": "He was given some anginine and morphine for the pain",
+            "label": "RECOMMENDATION",
+            "start": 167,
+            "end": 219
+          },
+          {
+            "quote": "he's still tachycardic and new meds have been ordered in the med chart",
+            "label": "ASSESSMENT",
+            "start": 224,
+            "end": 294
+          },
+          {
+            "quote": "still for pulse checks for one full minute um still awaiting for echo this afternoon",
+            "label": "RECOMMENDATION",
+            "start": 295,
+            "end": 379
+          },
+          {
+            "quote": "his blood pressure is just normal though",
+            "label": "ASSESSMENT",
+            "start": 380,
+            "end": 420
+          },
+          {
+            "quote": "he is scoring muse of three for the tachycardia",
+            "label": "ASSESSMENT",
+            "start": 421,
+            "end": 468
+          },
+          {
+            "quote": "otherwise he's still for monitoring",
+            "label": "RECOMMENDATION",
+            "start": 469,
+            "end": 504
+          }
+        ]
+      },
+      {
+        "text": "On bed 1, it's Ramanathan Nishapilai. He's actually 46 years old under Dr. Smith. He came in with arrhythmia for 2 weeks now with a history of the same problem before and she is here for management. Same regimen and nothing's new for her. And there's no plan for discharge as of yet. And that's all for her. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 80,
+            "token_start": 0,
+            "token_end": 17,
+            "label": "IDENTIFICATION",
+            "quote": "On bed 1, it's Ramanathan Nishapilai. He's actually 46 years old under Dr. Smith"
+          },
+          {
+            "start": 82,
+            "end": 124,
+            "token_start": 19,
+            "token_end": 27,
+            "label": "SITUATION",
+            "quote": "He came in with arrhythmia for 2 weeks now"
+          },
+          {
+            "start": 132,
+            "end": 166,
+            "token_start": 30,
+            "token_end": 35,
+            "label": "BACKGROUND",
+            "quote": "history of the same problem before"
+          },
+          {
+            "start": 199,
+            "end": 282,
+            "token_start": 43,
+            "token_end": 61,
+            "label": "RECOMMENDATION",
+            "quote": "Same regimen and nothing's new for her. And there's no plan for discharge as of yet"
+          }
+        ]
+      },
+      {
+        "text": "Phil Albert Rivet, 64 years old under Dr. Garcia, in bed 2, came in for thrombolytic therapy with long history of cardiac problems for 14 years now. Brought in by ambulance 4 days ago on regular nitros and he is still the same. Obstacles are stable and he is gradually improving and no other problems noted. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 58,
+            "token_start": 0,
+            "token_end": 13,
+            "label": "IDENTIFICATION",
+            "quote": "Phil Albert Rivet, 64 years old under Dr. Garcia, in bed 2"
+          },
+          {
+            "start": 60,
+            "end": 92,
+            "token_start": 15,
+            "token_end": 19,
+            "label": "SITUATION",
+            "quote": "came in for thrombolytic therapy"
+          },
+          {
+            "start": 98,
+            "end": 147,
+            "token_start": 21,
+            "token_end": 29,
+            "label": "BACKGROUND",
+            "quote": "long history of cardiac problems for 14 years now"
+          },
+          {
+            "start": 149,
+            "end": 226,
+            "token_start": 31,
+            "token_end": 46,
+            "label": "SITUATION",
+            "quote": "Brought in by ambulance 4 days ago on regular nitros and he is still the same"
+          },
+          {
+            "start": 228,
+            "end": 307,
+            "token_start": 48,
+            "token_end": 61,
+            "label": "ASSESSMENT",
+            "quote": "Obstacles are stable and he is gradually improving and no other problems noted."
+          }
+        ]
+      },
+      {
+        "text": "In bed 2 it's Scott Rogers 66 under Dr. Dalianis. He came in with chest pain with narrowing of arteries and for surgery later. His pre-op checklist has been done and it's in the front of the chart. ECG has been done as well. He's in a gown and he's all ready to go. He was fasted from midnight for this surgery and they might put a stent or they might do ballooning depending on the blockage aside from cabbage. The patient have consented for it and it's in the chart. Otherwise, obs are all stable. and that's all for him ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 49,
+            "token_start": 0,
+            "token_end": 11,
+            "label": "IDENTIFICATION",
+            "quote": "In bed 2 it's Scott Rogers 66 under Dr. Dalianis."
+          },
+          {
+            "start": 50,
+            "end": 126,
+            "token_start": 12,
+            "token_end": 26,
+            "label": "SITUATION",
+            "quote": "He came in with chest pain with narrowing of arteries and for surgery later."
+          },
+          {
+            "start": 127,
+            "end": 468,
+            "token_start": 27,
+            "token_end": 104,
+            "label": "RECOMMENDATION",
+            "quote": "His pre-op checklist has been done and it's in the front of the chart. ECG has been done as well. He's in a gown and he's all ready to go. He was fasted from midnight for this surgery and they might put a stent or they might do ballooning depending on the blockage aside from cabbage. The patient have consented for it and it's in the chart."
+          },
+          {
+            "start": 469,
+            "end": 498,
+            "token_start": 105,
+            "token_end": 110,
+            "label": "ASSESSMENT",
+            "quote": "Otherwise, obs are all stable"
+          }
+        ]
+      },
+      {
+        "text": "Mike Hanlin, 48 years old, under Dr. Johnson, in Bed 3, came in with a query heartburn or heart attack for investigation. He's on regular nitros. His obs are all stable and he's for repeat blads tomorrow. So he's for Echo to be arranged and just monitoring and that's all for him. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 55,
+            "token_start": 0,
+            "token_end": 14,
+            "label": "IDENTIFICATION",
+            "quote": "Mike Hanlin, 48 years old, under Dr. Johnson, in Bed 3,"
+          },
+          {
+            "start": 56,
+            "end": 120,
+            "token_start": 15,
+            "token_end": 25,
+            "label": "SITUATION",
+            "quote": "came in with a query heartburn or heart attack for investigation"
+          },
+          {
+            "start": 122,
+            "end": 144,
+            "token_start": 27,
+            "token_end": 31,
+            "label": "RECOMMENDATION",
+            "quote": "He's on regular nitros"
+          },
+          {
+            "start": 146,
+            "end": 204,
+            "token_start": 33,
+            "token_end": 45,
+            "label": "ASSESSMENT",
+            "quote": "His obs are all stable and he's for repeat blads tomorrow."
+          },
+          {
+            "start": 208,
+            "end": 256,
+            "token_start": 47,
+            "token_end": 56,
+            "label": "RECOMMENDATION",
+            "quote": "he's for Echo to be arranged and just monitoring"
+          }
+        ]
+      },
+      {
+        "text": "Stephen Jonathan Spencer, 72 years old under Dr. Liu. He's in bed 6, came in from Melbourne with fevers and tiredness. He had cabbage 3 months ago and he's only here to visit his daughter and grandchildren and then he got sick. His obs are all stable and he's still for investigation. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 67,
+            "token_start": 0,
+            "token_end": 15,
+            "label": "IDENTIFICATION",
+            "quote": "Stephen Jonathan Spencer, 72 years old under Dr. Liu. He's in bed 6"
+          },
+          {
+            "start": 69,
+            "end": 117,
+            "token_start": 17,
+            "token_end": 24,
+            "label": "SITUATION",
+            "quote": "came in from Melbourne with fevers and tiredness"
+          },
+          {
+            "start": 119,
+            "end": 146,
+            "token_start": 26,
+            "token_end": 31,
+            "label": "BACKGROUND",
+            "quote": "He had cabbage 3 months ago"
+          },
+          {
+            "start": 228,
+            "end": 250,
+            "token_start": 49,
+            "token_end": 53,
+            "label": "ASSESSMENT",
+            "quote": "His obs are all stable"
+          },
+          {
+            "start": 255,
+            "end": 284,
+            "token_start": 55,
+            "token_end": 60,
+            "label": "RECOMMENDATION",
+            "quote": "he's still for investigation."
+          }
+        ]
+      },
+      {
+        "text": "On Bed 5, it's Layla Sonia Da Silva. She's 34 years old after Dr. Liu came in for management of her diabetes. She's got a history of type 1 DM since childhood and hypertension. She's still for referral to diabetic educator and she is self-caring with her own BGLs and insulin. Her insulin is on a sliding scale insulin and on a variable dose so just ask the doctor for the next dose depending on her blood sugar. Her blood sugar trend used to be high during the morning so still need the team to review for that. her blood pressure is not so bad though and of a high normal range and still for review otherwise she is pretty much self-caring in ambulance and there are no other problems noted and that's all for her ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 69,
+            "token_start": 0,
+            "token_end": 18,
+            "label": "IDENTIFICATION",
+            "quote": "On Bed 5, it's Layla Sonia Da Silva. She's 34 years old after Dr. Liu"
+          },
+          {
+            "start": 70,
+            "end": 109,
+            "token_start": 19,
+            "token_end": 26,
+            "label": "SITUATION",
+            "quote": "came in for management of her diabetes."
+          },
+          {
+            "start": 110,
+            "end": 175,
+            "token_start": 27,
+            "token_end": 39,
+            "label": "BACKGROUND",
+            "quote": "She's got a history of type 1 DM since childhood and hypertension"
+          },
+          {
+            "start": 177,
+            "end": 275,
+            "token_start": 41,
+            "token_end": 60,
+            "label": "RECOMMENDATION",
+            "quote": "She's still for referral to diabetic educator and she is self-caring with her own BGLs and insulin"
+          },
+          {
+            "start": 277,
+            "end": 412,
+            "token_start": 62,
+            "token_end": 89,
+            "label": "RECOMMENDATION",
+            "quote": "Her insulin is on a sliding scale insulin and on a variable dose so just ask the doctor for the next dose depending on her blood sugar."
+          },
+          {
+            "start": 413,
+            "end": 469,
+            "token_start": 90,
+            "token_end": 100,
+            "label": "ASSESSMENT",
+            "quote": "Her blood sugar trend used to be high during the morning"
+          },
+          {
+            "start": 473,
+            "end": 511,
+            "token_start": 102,
+            "token_end": 109,
+            "label": "RECOMMENDATION",
+            "quote": "still need the team to review for that"
+          },
+          {
+            "start": 513,
+            "end": 579,
+            "token_start": 111,
+            "token_end": 124,
+            "label": "ASSESSMENT",
+            "quote": "her blood pressure is not so bad though and of a high normal range"
+          },
+          {
+            "start": 584,
+            "end": 600,
+            "token_start": 126,
+            "token_end": 128,
+            "label": "RECOMMENDATION",
+            "quote": "still for review"
+          },
+          {
+            "start": 611,
+            "end": 654,
+            "token_start": 130,
+            "token_end": 138,
+            "label": "ASSESSMENT",
+            "quote": "she is pretty much self-caring in ambulance"
+          }
+        ]
+      },
+      {
+        "text": "On bed 2, it's Pierre Cox, 77 years old under Dr. Greger, came in with pain and swelling of the right leg and query embolism. He's got a history of coronary artery disease and he's a heavy smoker. um he is four leg ultrasound today at 2 p.m and on therapeutic lexane he still complains of pain scoring 9 out of 10 and endon was given with good effect he's charted for regular oxycontin and panadol for pain and He can still have PRN for pain. He needs assistance in transfers and he transfers using a commode chair to the toilet and he's unable to walk due to pain in the leg. He is in a low-fat diet and he is still for review by the team and the consultant hasn't seen him yet. His abs are all normal but with slightly raised blood pressure maybe due to pain but the doctors are aware. He is started on nicotine patch but he really doesn't like it. And he still wants to smoke outside but advised not to. And that's all for him. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 56,
+            "token_start": 0,
+            "token_end": 14,
+            "label": "IDENTIFICATION",
+            "quote": "On bed 2, it's Pierre Cox, 77 years old under Dr. Greger"
+          },
+          {
+            "start": 58,
+            "end": 124,
+            "token_start": 16,
+            "token_end": 28,
+            "label": "SITUATION",
+            "quote": "came in with pain and swelling of the right leg and query embolism"
+          },
+          {
+            "start": 126,
+            "end": 195,
+            "token_start": 30,
+            "token_end": 44,
+            "label": "BACKGROUND",
+            "quote": "He's got a history of coronary artery disease and he's a heavy smoker"
+          },
+          {
+            "start": 200,
+            "end": 266,
+            "token_start": 47,
+            "token_end": 59,
+            "label": "RECOMMENDATION",
+            "quote": "he is four leg ultrasound today at 2 p.m and on therapeutic lexane"
+          },
+          {
+            "start": 270,
+            "end": 350,
+            "token_start": 61,
+            "token_end": 76,
+            "label": "ASSESSMENT",
+            "quote": "still complains of pain scoring 9 out of 10 and endon was given with good effect"
+          },
+          {
+            "start": 351,
+            "end": 441,
+            "token_start": 77,
+            "token_end": 94,
+            "label": "RECOMMENDATION",
+            "quote": "he's charted for regular oxycontin and panadol for pain and He can still have PRN for pain"
+          },
+          {
+            "start": 443,
+            "end": 528,
+            "token_start": 96,
+            "token_end": 110,
+            "label": "RECOMMENDATION",
+            "quote": "He needs assistance in transfers and he transfers using a commode chair to the toilet"
+          },
+          {
+            "start": 533,
+            "end": 575,
+            "token_start": 112,
+            "token_end": 122,
+            "label": "ASSESSMENT",
+            "quote": "he's unable to walk due to pain in the leg"
+          },
+          {
+            "start": 577,
+            "end": 678,
+            "token_start": 124,
+            "token_end": 148,
+            "label": "RECOMMENDATION",
+            "quote": "He is in a low-fat diet and he is still for review by the team and the consultant hasn't seen him yet"
+          },
+          {
+            "start": 680,
+            "end": 760,
+            "token_start": 150,
+            "token_end": 164,
+            "label": "ASSESSMENT",
+            "quote": "His abs are all normal but with slightly raised blood pressure maybe due to pain"
+          },
+          {
+            "start": 761,
+            "end": 786,
+            "token_start": 165,
+            "token_end": 169,
+            "label": "RECOMMENDATION",
+            "quote": "but the doctors are aware"
+          },
+          {
+            "start": 788,
+            "end": 819,
+            "token_start": 171,
+            "token_end": 176,
+            "label": "RECOMMENDATION",
+            "quote": "He is started on nicotine patch"
+          },
+          {
+            "start": 820,
+            "end": 850,
+            "token_start": 177,
+            "token_end": 184,
+            "label": "ASSESSMENT",
+            "quote": "but he really doesn't like it."
+          },
+          {
+            "start": 851,
+            "end": 905,
+            "token_start": 185,
+            "token_end": 195,
+            "label": "RECOMMENDATION",
+            "quote": "And he still wants to smoke outside but advised not to"
+          }
+        ]
+      },
+      {
+        "text": "On Bed 3, it's Wendell Mario Fleming, 41 years old, under Dr. Smith. He came in with liver failure for investigation on the background of DM type 2. He's still for bloods and for liver biopsies per plan for CT and MRI to be arranged. He's a bit jaundiced and he's been vomiting during my shift and antiemetics was given with good effect. He was seen by the team today and they have started him on IV fluids and it's been running at 100 mls per hour. He is very difficult to cannulate though. His ops are all stable and he is self-caring and ambulant. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 68,
+            "token_start": 0,
+            "token_end": 17,
+            "label": "IDENTIFICATION",
+            "quote": "On Bed 3, it's Wendell Mario Fleming, 41 years old, under Dr. Smith."
+          },
+          {
+            "start": 69,
+            "end": 116,
+            "token_start": 18,
+            "token_end": 25,
+            "label": "SITUATION",
+            "quote": "He came in with liver failure for investigation"
+          },
+          {
+            "start": 120,
+            "end": 147,
+            "token_start": 27,
+            "token_end": 32,
+            "label": "BACKGROUND",
+            "quote": "the background of DM type 2"
+          },
+          {
+            "start": 149,
+            "end": 232,
+            "token_start": 34,
+            "token_end": 51,
+            "label": "RECOMMENDATION",
+            "quote": "He's still for bloods and for liver biopsies per plan for CT and MRI to be arranged"
+          },
+          {
+            "start": 234,
+            "end": 336,
+            "token_start": 53,
+            "token_end": 72,
+            "label": "ASSESSMENT",
+            "quote": "He's a bit jaundiced and he's been vomiting during my shift and antiemetics was given with good effect"
+          },
+          {
+            "start": 338,
+            "end": 448,
+            "token_start": 74,
+            "token_end": 98,
+            "label": "RECOMMENDATION",
+            "quote": "He was seen by the team today and they have started him on IV fluids and it's been running at 100 mls per hour"
+          },
+          {
+            "start": 450,
+            "end": 490,
+            "token_start": 100,
+            "token_end": 106,
+            "label": "RECOMMENDATION",
+            "quote": "He is very difficult to cannulate though"
+          },
+          {
+            "start": 492,
+            "end": 549,
+            "token_start": 108,
+            "token_end": 120,
+            "label": "ASSESSMENT",
+            "quote": "His ops are all stable and he is self-caring and ambulant"
+          }
+        ]
+      },
+      {
+        "text": "On bed 8, it's Thuy Leu, 29 years old, under Dr. Greger. She came in with chest pain and found to have blood clots in her lungs. She is self-caring and ambulant. She's still waiting for the doctors to review. And she's awaiting plan for her... and they said they will they will see her later otherwise her obs are all normal and she had regular paracetamol and endone for pain and that's all ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 56,
+            "token_start": 0,
+            "token_end": 16,
+            "label": "IDENTIFICATION",
+            "quote": "On bed 8, it's Thuy Leu, 29 years old, under Dr. Greger."
+          },
+          {
+            "start": 57,
+            "end": 127,
+            "token_start": 17,
+            "token_end": 31,
+            "label": "SITUATION",
+            "quote": "She came in with chest pain and found to have blood clots in her lungs"
+          },
+          {
+            "start": 129,
+            "end": 160,
+            "token_start": 33,
+            "token_end": 39,
+            "label": "ASSESSMENT",
+            "quote": "She is self-caring and ambulant"
+          },
+          {
+            "start": 162,
+            "end": 208,
+            "token_start": 41,
+            "token_end": 50,
+            "label": "RECOMMENDATION",
+            "quote": "She's still waiting for the doctors to review."
+          },
+          {
+            "start": 209,
+            "end": 291,
+            "token_start": 51,
+            "token_end": 68,
+            "label": "RECOMMENDATION",
+            "quote": "And she's awaiting plan for her... and they said they will they will see her later"
+          },
+          {
+            "start": 302,
+            "end": 324,
+            "token_start": 70,
+            "token_end": 74,
+            "label": "ASSESSMENT",
+            "quote": "her obs are all normal"
+          },
+          {
+            "start": 329,
+            "end": 376,
+            "token_start": 76,
+            "token_end": 83,
+            "label": "RECOMMENDATION",
+            "quote": "she had regular paracetamol and endone for pain"
+          }
+        ]
+      },
+      {
+        "text": "And in bed five, we've got Maria Sanner, 88 years old, under Dr. Garcia. Came in originally with high blood pressure and with dementia and just waiting for a nursing home placement. And that's all for her. ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 71,
+            "token_start": 0,
+            "token_end": 17,
+            "label": "IDENTIFICATION",
+            "quote": "And in bed five, we've got Maria Sanner, 88 years old, under Dr. Garcia"
+          },
+          {
+            "start": 73,
+            "end": 116,
+            "token_start": 19,
+            "token_end": 25,
+            "label": "SITUATION",
+            "quote": "Came in originally with high blood pressure"
+          },
+          {
+            "start": 121,
+            "end": 134,
+            "token_start": 27,
+            "token_end": 28,
+            "label": "BACKGROUND",
+            "quote": "with dementia"
+          },
+          {
+            "start": 139,
+            "end": 180,
+            "token_start": 30,
+            "token_end": 36,
+            "label": "RECOMMENDATION",
+            "quote": "just waiting for a nursing home placement"
+          }
+        ]
+      },
+      {
+        "text": "um on bed eight it's eric wong 69 years old under dr johnson um he came in with high cholesterol and he is for daily bloods and carotid doppler ultrasound tomorrow uh he is also for study for his arteries so they can start his medication and Yeah, he's for study for his arteries so they can start his medication. And he's very anxious about it. we can ask the doctors to to explain to him the procedure and talk to him he is on general diet and he is ambulant and self-caring he's got high blood pressure but all other orbs are all stable and the team are all aware and that's all for him ",
+        "spans": [
+          {
+            "start": 3,
+            "end": 60,
+            "token_start": 1,
+            "token_end": 13,
+            "label": "IDENTIFICATION",
+            "quote": "on bed eight it's eric wong 69 years old under dr johnson"
+          },
+          {
+            "start": 67,
+            "end": 96,
+            "token_start": 16,
+            "token_end": 20,
+            "label": "SITUATION",
+            "quote": "came in with high cholesterol"
+          },
+          {
+            "start": 101,
+            "end": 163,
+            "token_start": 22,
+            "token_end": 31,
+            "label": "RECOMMENDATION",
+            "quote": "he is for daily bloods and carotid doppler ultrasound tomorrow"
+          },
+          {
+            "start": 167,
+            "end": 312,
+            "token_start": 33,
+            "token_end": 62,
+            "label": "RECOMMENDATION",
+            "quote": "he is also for study for his arteries so they can start his medication and Yeah, he's for study for his arteries so they can start his medication"
+          },
+          {
+            "start": 314,
+            "end": 344,
+            "token_start": 64,
+            "token_end": 70,
+            "label": "ASSESSMENT",
+            "quote": "And he's very anxious about it"
+          },
+          {
+            "start": 346,
+            "end": 441,
+            "token_start": 72,
+            "token_end": 92,
+            "label": "RECOMMENDATION",
+            "quote": "we can ask the doctors to to explain to him the procedure and talk to him he is on general diet"
+          },
+          {
+            "start": 446,
+            "end": 539,
+            "token_start": 94,
+            "token_end": 113,
+            "label": "ASSESSMENT",
+            "quote": "he is ambulant and self-caring he's got high blood pressure but all other orbs are all stable"
+          },
+          {
+            "start": 544,
+            "end": 566,
+            "token_start": 115,
+            "token_end": 119,
+            "label": "RECOMMENDATION",
+            "quote": "the team are all aware"
+          }
+        ]
+      },
+      {
+        "text": "In Bed 1, it's Cindy Benedictos under Dr. Smith. She came in for management of diabetes and high cholesterol. She was seen by the team today and they had adjusted her dose again. She's got fluctuating BGLs and it's monitored QID plus PRN. um she's on daily bloods and for diabetes educator tomorrow at 2 30 p.m she is self-caring though and she does her own insulin and she just needs a little bit of supervision the team is planning for her to get discharged early this this week or no sorry next week other than that um all are stable all obs are stable ",
+        "spans": [
+          {
+            "start": 0,
+            "end": 47,
+            "token_start": 0,
+            "token_end": 10,
+            "label": "IDENTIFICATION",
+            "quote": "In Bed 1, it's Cindy Benedictos under Dr. Smith"
+          },
+          {
+            "start": 49,
+            "end": 108,
+            "token_start": 12,
+            "token_end": 21,
+            "label": "SITUATION",
+            "quote": "She came in for management of diabetes and high cholesterol"
+          },
+          {
+            "start": 110,
+            "end": 177,
+            "token_start": 23,
+            "token_end": 36,
+            "label": "RECOMMENDATION",
+            "quote": "She was seen by the team today and they had adjusted her dose again"
+          },
+          {
+            "start": 179,
+            "end": 310,
+            "token_start": 38,
+            "token_end": 65,
+            "label": "RECOMMENDATION",
+            "quote": "She's got fluctuating BGLs and it's monitored QID plus PRN. um she's on daily bloods and for diabetes educator tomorrow at 2 30 p.m"
+          },
+          {
+            "start": 311,
+            "end": 365,
+            "token_start": 66,
+            "token_end": 77,
+            "label": "ASSESSMENT",
+            "quote": "she is self-caring though and she does her own insulin"
+          },
+          {
+            "start": 370,
+            "end": 502,
+            "token_start": 79,
+            "token_end": 104,
+            "label": "RECOMMENDATION",
+            "quote": "she just needs a little bit of supervision the team is planning for her to get discharged early this this week or no sorry next week"
+          },
+          {
+            "start": 537,
+            "end": 555,
+            "token_start": 112,
+            "token_end": 115,
+            "label": "ASSESSMENT",
+            "quote": "all obs are stable"
+          }
+        ]
+      }
+    ],
+    "signature": {
+      "instructions": "# Your task\n\nYou are a clinical documentation analysis tool designed to systematically categorize information from a clinical handover note according to the ISBAR framework and extract text into a json structured format.\n\n## Instructions\n1. Identify and extract text from the clinical handover transcript that aligns with the ISBAR framework categories: **IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION**.\n2. **Each extracted quote must represent a single piece of information**. If the transcript contains multiple pieces of information within the same category, extract each as a separate quote.\n3. **Do not combine unrelated details** into a single quote. Each piece of extracted text should be concise and specific to one detail.\n4. Extracted text must appear **exactly as written in the original transcript**, preserving spelling, capitalization, punctuation, and phrasing. Do not paraphrase. Do not summarize. Do not correct incorrectly spelled words. Do not correct errors. Do not rephrase.\n5. Text can appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position in the transcript.\n6. If text does not fit into any ISBAR category, do not extract it.\n    ",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "text"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Spans:",
+          "description": "list of objects containing quote and label keys"
+        }
+      ]
+    },
+    "extended_signature": {
+      "instructions": "You are a clinical documentation analysis tool tasked with systematically categorizing information from a clinical handover note according to the ISBAR framework. Your goal is to extract text into a structured JSON format. \n\n## Instructions\n1. Carefully review the clinical handover transcript and identify text that aligns with the ISBAR framework categories: **IDENTIFICATION, SITUATION, BACKGROUND, ASSESSMENT, RECOMMENDATION**.\n2. For each ISBAR category, extract quotes that represent a single piece of information. If multiple pieces of information are present within the same category, extract each as a separate quote.\n3. Ensure that unrelated details are not combined into a single quote. Each extracted text must be concise and specific to one detail.\n4. The extracted text must appear **exactly as written in the original transcript**, maintaining spelling, capitalization, punctuation, and phrasing. Do not paraphrase, summarize, or correct any errors.\n5. Text may appear out of sequence in the transcript. Assign it to the correct ISBAR category based on its content, regardless of its position.\n6. If any text does not fit into an ISBAR category, do not extract it.",
+      "fields": [
+        {
+          "prefix": "Text:",
+          "description": "text"
+        },
+        {
+          "prefix": "Reasoning: Let's think step by step in order to",
+          "description": "${reasoning}"
+        },
+        {
+          "prefix": "Spans:",
+          "description": "list of objects containing quote and label keys"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "dependency_versions": {
+      "python": "3.12.6",
+      "dspy": "2.5.43",
+      "cloudpickle": "3.1.1"
+    }
+  }
+}

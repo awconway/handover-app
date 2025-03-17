@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from pydantic import BaseModel
 from typing import List
 import json
@@ -27,6 +27,11 @@ from robust_deid.deid import TextDeid
 
 # imports for token count
 import tiktoken
+
+# dspy
+import dspy
+from typing import TypedDict
+
 
 
 load_dotenv()  # take environment variables from .env.
@@ -69,6 +74,23 @@ async def get_eval(data: InputModel):
     OPENAI_MODEL = data.model
     transcription = data.transcript
 
+    if data.model == "gpt-4o-mini-fewshot":
+        try:
+            # Configure your language model and 'asyncify' your DSPy program.
+            lm = dspy.LM("openai/gpt-4o-mini", cache=False)
+            dspy.settings.configure(lm=lm, async_max_workers=8) # default is 8
+            dspy_program = dspy.ChainOfThought(IsbarExtraction)
+            dspy_program.load("dspy-4o-mini-optimized.json")
+            dspy_program = dspy.asyncify(dspy_program)
+            result = await dspy_program(text=data.transcript)
+            return {
+                "status": "success",
+                "prompt": lm.history[-1],
+                "llmresponse": {"spans":result.spans},
+            }
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e))
+
     # Use OpenAI API to process the transcript
     response = client.beta.chat.completions.parse(
         model=OPENAI_MODEL,
@@ -78,11 +100,10 @@ async def get_eval(data: InputModel):
         ],
         response_format=ISBAROutput
     )
-    # print number of tokens used
-    print(response.usage)
-    print(response.choices[0].message.parsed)
+
     return {
             "llmresponse": response.choices[0].message.parsed,
+            "prompt": prompt,
             "usage": response.usage
             }
 
@@ -92,7 +113,7 @@ class Tokens(BaseModel):
 
 def num_tokens_from_string(string: str, encoding_name: str) -> int:
     """Returns the number of tokens in a text string."""
-    encoding_name_string = tiktoken.encoding_for_model(encoding_name).name  # returns str 
+    encoding_name_string = tiktoken.encoding_for_model(encoding_name).name  # returns str
     encoding = tiktoken.get_encoding(encoding_name_string)
     num_tokens = len(encoding.encode(string))
     return num_tokens
@@ -119,7 +140,7 @@ async def transcribe_audio(audio: UploadFile = File(...)):
     compute_type="int8"
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(
-        "distil-large-v3", device, 
+        "distil-large-v3", device,
         compute_type=compute_type
         )
     webm_buffer = audio.file.read()
@@ -168,16 +189,16 @@ async def transcribe_audio(audio: UploadFile = File(...)):
 
     # Initialize the location where we will store the sentencized and tokenized dataset (ner_dataset_file)
     ner_dataset_file = 'deid/test.jsonl'
-    
+
     # Initialize the location where we will store the model predictions (predictions_file)
     # Verify this file location - Ensure it's the same location that you will pass in the json file
     # to the sequence tagger model. i.e. output_predictions_file in the json file should have the same
     # value as below
     predictions_file = 'deid/predictions.jsonl'
-    
+
     # Initialize the model config. This config file contains the various parameters of the model.
     model_config = 'deid/predict_i2b2.json'
-    
+
     # ## STEP 2: NER DATASET
     # * Sentencize and tokenize the raw text. We used sentences of length 128, which includes an additional 32 context tokens on either side of the sentence. These 32 tokens serve (from the previous & next sentence) serve as additional context to the current sentence.
     # * We used the en_core_sci_lg sentencizer and a custom tokenizer (can be found in the preprocessing module)
@@ -304,3 +325,25 @@ async def transcribe_audio(audio: UploadFile = File(...)):
 
     return {"transcription": transcription,
             "deid": deid }
+
+
+# Define the TypedDict for spans
+class Spans(TypedDict):
+    quote: str
+    label: str
+
+# Define request model for better documentation and validation
+class Text(BaseModel):
+    text: str
+
+
+# Define the ISBAR extraction signature
+class IsbarExtraction(dspy.Signature):
+    """
+    Handover text extraction using the ISBAR framework.
+    """
+
+    text: str = dspy.InputField(desc="text")
+    spans: list[Spans] = dspy.OutputField(
+        desc="list of objects containing quote and label keys"
+    )

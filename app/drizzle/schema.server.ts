@@ -11,7 +11,8 @@ export const transcriptions = sqliteTable("transcriptions", {
   handoverid: text("handoverid"),
   transcription: text("transcription"),
   deid: text("deid"),
-  llmresponse: text("llmresponse", { mode: 'json' }).$type<{ foo: string }>(),
+  prompt: text("prompt", { mode: "json" }).$type<{ foo: string }>(),
+  llmresponse: text("llmresponse", { mode: "json" }).$type<{ foo: string }>(),
   llm: text("llm"),
-  usage: text("usage", { mode: 'json' }).$type<{ foo: string }>()  
+  usage: text("usage", { mode: "json" }).$type<{ foo: string }>(),
 });

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "1e6716bd-33ab-4d44-b845-cd6391d2c931",
+  "id": "ddfce740-ff96-43de-91d5-2ad1a2c86737",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "transcriptions": {
@@ -36,8 +36,36 @@
           "notNull": false,
           "autoincrement": false
         },
+        "deid": {
+          "name": "deid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prompt": {
+          "name": "prompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "llmresponse": {
           "name": "llmresponse",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "llm": {
+          "name": "llm",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "usage": {
+          "name": "usage",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
