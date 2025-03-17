@@ -132,12 +132,12 @@ async def get_tokens(data: Tokens):
 @app.post("/transcribe/")
 async def transcribe_audio(audio: UploadFile = File(...)):
     filename = audio.filename
-    device = "cpu"
-    # device = "cuda"  # use "cuda" for GPU
+    # device = "cpu"
+    device = "cuda"  # use "cuda" for GPU
     batch_size = 16  # reduce if low on GPU mem
     # change to "int8" if low on GPU mem or mac (may reduce accuracy)
-    # compute_type = "float16"
-    compute_type="int8"
+    compute_type = "float16"
+    # compute_type="int8"
     # 1. Transcribe with original whisper (batched)
     model = whisperx.load_model(
         "distil-large-v3", device,
